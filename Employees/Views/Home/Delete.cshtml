@@ -1,0 +1,28 @@
+﻿<!-- Part 55 - step 4 - add view for Edit employee using tag helper (copy from Create.cshtml)-->
+@model EmployeeDeleteViewModel
+
+@{
+    ViewBag.Title = "Delete Employee";
+}
+
+<form enctype="multipart/form-data" asp-controller="home" asp-action="Delete" method="post" class="mt-3">
+    <input hidden asp-for="Id" />
+
+    <div>
+        <button type="submit" class="btn btn-primary" style="width:auto">Delete</button>
+        <a asp-controller="home" asp-action="List" class="btn btn-primary" style="width:auto">Cancel</a>
+    </div>
+
+    <!--part 53 - step2 - Jquery script for file upload -->
+    @section Scripts {
+        <script>
+                $(document).ready(function () {
+                    $('.custom-file-input').on("change", function () {
+                        var filename = $(this).val().split("\\").pop();
+                        $(this).next('.custom-file-label').html(filename);
+                    });
+                });
+        </script>
+    }
+
+</form>

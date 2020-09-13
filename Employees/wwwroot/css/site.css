@@ -1,0 +1,12 @@
+﻿/* if not working need to clean browser and iisreset */
+.btn {
+    width: 55px;
+    height: 30px;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+.imageThumbnail {
+    height: 150px;
+    width:auto;
+}

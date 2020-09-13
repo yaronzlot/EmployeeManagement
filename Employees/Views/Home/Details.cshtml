@@ -1,0 +1,59 @@
+﻿<!--model Employees.ViewModels.HomeDetailsViewModel  - isnot nececery in each view due to _ViewInport.cshtml - part 31-->
+@model HomeDetailsViewModel
+
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";  //* Part 30 using ViewStart so there is no need to add this line
+    ViewBag.Title = "Employee Details";
+    var photoPath = "~/Images/" + (Model.Employee.PhotoPath  ?? "noimage.jpg");
+}
+
+
+<div class="row justify-content-center m-2">
+    <div class="col-sm-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <h5>@Model.Employee.Name</h5>
+                <!-- <h5>Process name:@System.Diagnostics.Process.GetCurrentProcess().ProcessName</h5>-->
+            </div>
+
+            <div class="card-body text-center m-0">
+                <img class="card-img-top" src=@photoPath height="200" asp-append-version="true"/>
+
+                <h6>ID : @Model.Employee.Id</h6>
+                <h6>Email : @Model.Employee.Email</h6>
+                <h6>Role : @Model.Employee.Role</h6>
+
+            </div>
+            <div class="card-footer text-center m-0">
+                <!--Part 35 -Tag Helper-->
+                <a asp-controller="home" asp-action="List" class="btn btn-primary m-1" style="width:auto">Back</a>
+                <!--//* part 55 - Step 2-->
+                <a asp-controller="home" asp-action="Edit" asp-route-id="@Model.Employee.Id" class="btn btn-primary m-1" style="width:auto">Edit</a>
+                <a href="#" class="btn btn-danger m-1">Del</a>
+            </div>
+            </div>
+    </div>
+
+
+    </div>
+
+
+    <!--
+    <!-- *retrive page title from "ViewBag.PageTitle = "Employee Details";" in HomeController.cs
+    <h3>@Model.PageTitle</h3>
+
+    <div>
+        Name: @Model.Employee.Name
+    </div>
+    <div>
+        Email: @Model.Employee.Email
+    </div>
+    <div>
+        Role: @Model.Employee.Role
+    </div>
+    -->
+                <!-- Part 28+29 - step 2 - Define that the view is using src="/js/CustomScript.js (we drug the js script here-->
+                <!--This content is injected into the Shared/_Layout.cshtml-->
+                @section Scripts {
+                    <script src="~/js/CustomScript.js"></script>
+                }

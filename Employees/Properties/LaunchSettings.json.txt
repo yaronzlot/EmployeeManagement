@@ -1,0 +1,19 @@
+"profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        //by default this value is "Production" for security and perfomance purpose
+        //if we change the value to Development in OS env varuables we need to restart visual studio to to see it (env.EnvironmentName)
+        //The value below override the value in the OS env. variables when chack with env.EnvironmentName in Startup.cs
+        "ASPNETCORE_ENVIRONMENT": "Production" //this key can be configure in OS environment variables (Staging or Production)
+      }
+    },
+    "Employees": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development" // OS environment variable override this code (and command line override OS EV)
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
+    }

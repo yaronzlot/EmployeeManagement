@@ -1,0 +1,136 @@
+﻿<!--Part 69 step 1 - Show or hide login and logout links based on login status-->
+@inject SignInManager<ApplicationUser> signInManager;
+
+<!DOCTYPE html>
+<!-- Part 28 -Add item -> Razor Layout and With this layout that is shared for all views and placed under Views/Shared
+    we can remove the head and the body from listcshtml and Details.cshtml views-->
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <!--part 38-->
+    <environment include="Development">
+        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+        <script src="~/lib/jquery/jquery.js"></script>
+        <!--Part 74 -step1 -client side validation -Install Employees>Add>Client-Site Library>Jquery-validate and drag here-->
+        <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+        <!--Part 74 -step2 -client side validation -Install Employees>Add>Client-Site Library>Jquery-validate-unobtrusive and drag here-->
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    </environment>
+
+    <!--part 38 - https://getbootstrap.com - need to scroll down find CSS and copy here - get href for CSS only for Production and Staging environemts-->
+    <environment exclude="Development">
+        <!-- CSS only -->
+        <link rel="stylesheet" 
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
+              integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" 
+              crossorigin="anonymous"
+              asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute"
+              asp-suppress-fallback-integrity="true" />
+        <script src="~/lib/jquery/jquery.min.js"></script>
+        <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    </environment>
+        <!--To check the check integrity:
+    1. in launchSettings.json change "ASPNETCORE_ENVIRONMENT": "Staging" in IISEXPRESS profile
+    2. change the integrity hash key and change above to somthing else so the css will not download from external site
+    3. change asp-suppress-fallback-integrity="false so the file from the local server will not download
+    4. run the application with IISEXPRESS
+    5. in chrome click CTRL+SHIFT+I and choose network and then refresh the page to see the error (download time is o) "-->
+  
+
+    <!--Part 34 - bootstrap -->
+    <!--step 1 Add-> client side library ->twitter-bootstrap@4.5.0-->
+    <!--step 2 open libman.json ->add "library": "jquery@3.5.1",-->
+    <!--Step 3 drag wwwroot/lib/bootstrap/css/bootstrap.css here to _Layout.cshtml line 18-->
+    <!--Step 4 add <div class="container"> in <body><div> line 43-->
+    <!--Step 5 update bootstarp code in Details.cshtml and List.cshtml line 10-32 -->
+    <!--Step 6 Add site.css to wwwroot/css and set .btn to 75px then drg the css to _Layout.cshtml line 39 - now all buttons will have the same wigth-->
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div class="container">
+        <!--Part 39 - step 1 - add menu bar using bootstarp-->
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <a class=" navbar-brand" asp-action="List" asp-controller="home">
+                <img src="~/Images/chicago.png" height="50" width="50" />
+            </a>
+
+            <!---Part 39 - step2 - Add toggle button to menu bar for small screen like mobile
+                and need to add jquery so it will work (add client side lib and drag it to line 10 below bootstrap)
+                Also need to drag bootstrap query to loine 11 under jquery-->
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar nav">
+                    <li class="nav-item">
+                        <a asp-action="List" asp-controller="home" class="nav-link">List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Create" asp-controller="home" class="nav-link">Create</a>
+                    </li>
+                    <!--Prt 83 - part 1 - Show or hide navigation menu based on user role  -->
+                    <!--//* Part 84 step 2 - list  all users - this for dropdown menu - next AccountController.cs-->
+                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Manage
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropMenuLink">
+                                <a class="dropdown-item" asp-action="ListUsers"
+                                   asp-controller="Administration">
+                                    Users</a>
+                                <a class="dropdown-item" asp-action="ListRoles"
+                                   asp-controller="Administration">
+                                    Roles</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <!--//* Part 66 - step 3 - Register new user with asp net core identity -> next AccountController.cs -->
+                <ul class="navbar nav ml-auto">
+                    <!--Part 69 step 3 - Show or hide login and logout links based on login status-->
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <form method="post" asp-action="logout" asp-controller="account">
+                                <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
+                                    Logout @User.Identity.Name
+                                </button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a asp-action="register" asp-controller="account" class="nav-link">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="login" asp-controller="account" class="nav-link">Login</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+
+        @RenderBody()
+    </div>
+    <div>
+        <!--<script src="~/js/CustomScript.js"></script>-->
+        <!--Part 28+29 - Step 1 -  Scripts render section is optinal and cannot been seen in Views/Home/List.cshtml-->
+        @if (IsSectionDefined("Scripts"))
+        {
+            @RenderSection("Scripts", required: true);
+        }
+    </div>
+</body>
+</html>

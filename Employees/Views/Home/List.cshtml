@@ -1,0 +1,57 @@
+﻿<!-- https://localhost:44341/home/list Step4 (Part 27) -->
+<!-- We pass from List method in HomeController "model" which is IEnumerable of Employees therefor the model below is using it -->
+<!--model IEnumerable<Employees.Models.Employee>  this is not nececery due to _ViewInport.cshtml part 31-->
+@model IEnumerable<Employee>
+
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml"; //* Part 30 - using Razor _ViewStart.cshtml -  no need this line
+    ViewBag.Title = "Employee List";
+}
+
+
+<div class=" card-deck">
+    @foreach (var employee in Model)
+    {
+        var photoPath = "~/Images/" + (employee.PhotoPath ?? "noimage.jpg");
+
+        <div class="card m-3" style="min-width:15rem; max-width:20.5%";>
+            <div class="card card-header m-0">
+                <h5>@employee.Name</h5>
+            </div>
+            <!--Part 36 -  asp-append-version="true" for load new image from the server where the key of the image is chaned-->
+            <!--Part 36 prevent using: Chrome -> More Tools -> Developer Options -> Network -> Disable cache-->
+            <img class="card-img-top imageThumbnail" src=@photoPath asp-append-version="true" />
+            <div class="card-footer text-center">
+                <!--Part 35 -Tag Helper -> the first step is to add addTagHelper to _ViewImports.cshtml and then use the below-->
+                <a asp-controller="home" asp-action="Details"
+                   asp-route-id="@employee.Id" class="btn btn-primary m-1">View</a>
+                <!--//* part 55 - Step 1-->
+                <a class="btn btn-primary m-1" asp-action="Edit"
+                   asp-controller="Home" asp-route-id="@employee.Id">Edit</a>
+                <a class="btn btn-danger m-1" asp-action="Delete" asp-controller="home" 
+                   asp-route-id="@employee.Id">Del</a>
+            </div>
+        </div>
+    }
+</div>
+    <!--
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.Id</td>
+                    <td>@employee.Name</td>
+                    <td>@employee.Role</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    -->

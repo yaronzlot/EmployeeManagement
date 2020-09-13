@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "All Users";
+}
+
+<!--//* Part 84 step 2 - list  all users -> next _Layout.cshtml-->
+<h1>All Users</h1>
+
+@if (Model.Any())
+{
+    <a asp-action="Register" asp-controller="Account"
+       class="btn btn-primary mb-3" style="width:auto">
+        Add new user
+    </a>
+
+    foreach (var user in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                User Id = @user.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@user.UserName</h5>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary" asp-action="EditUser" asp-controller="Administration"
+                   asp-route-id="@user.Id">Edit</a>
+                <a href="#" class="btn btn-danger">Del</a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No user was created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a new user
+            </h5>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-primary" asp-action="Register" asp-controller="Account" style="width:auto">
+                Add new user
+            </a>
+        </div>
+    </div>
+}
